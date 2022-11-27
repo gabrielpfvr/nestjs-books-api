@@ -6,7 +6,7 @@ export class BookRequest {
     readonly name: string;
 
     @IsString()
-    readonly description: string;
+    readonly author: string;
     
     @IsString({ each: true })
     readonly tags: string[];
