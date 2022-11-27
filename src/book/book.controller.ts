@@ -20,16 +20,16 @@ export class BookController {
 
     @Post()
     create(@Body() updateRequest: BookRequest) {
-        return this.bookService.create(updateRequest);
+        this.bookService.create(updateRequest);
     }
 
     @Patch(':id')
     update(@Param('id') id: string, @Body() updateRequest: BookUpdateRequest) {
-        return this.bookService.update(+id, updateRequest);
+        this.bookService.update(+id, updateRequest);
     }
 
     @Delete(':id')
     delete(@Param('id') id: string) {
-        return this.bookService.delete(+id);
+        this.bookService.delete(+id);
     }
 }

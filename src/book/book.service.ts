@@ -29,7 +29,7 @@ export class BookService {
 
     create(request: BookRequest) {
         const book = this.repository.create(request);
-        return this.repository.save(book);
+        this.repository.save(book);
     }
 
     async update(id: number, updateRequest: BookUpdateRequest) {
@@ -39,7 +39,7 @@ export class BookService {
         if (!book) {
             throw BookService.NOT_FOUND_EXCEPTION;
         }
-        return this.repository.save(book);
+        this.repository.save(book);
     }
 
     async delete(id: number) {
@@ -48,6 +48,6 @@ export class BookService {
         if (!book) {
             throw BookService.NOT_FOUND_EXCEPTION;
         }
-        return this.repository.remove(book);
+        this.repository.remove(book);
     }
 }
