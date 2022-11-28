@@ -1,13 +1,13 @@
-import { IsString } from "class-validator";
+import { IsArray, IsNumber, IsString } from "class-validator";
 
 export class BookRequest {
 
     @IsString()
-    readonly name: string;
+    readonly title: string;
 
-    @IsString()
-    readonly author: string;
-    
-    @IsString({ each: true })
-    readonly tags: string[];
+    @IsNumber()
+    readonly pages: number;
+
+    @IsArray()
+    readonly authorsIds: number[];
 }
