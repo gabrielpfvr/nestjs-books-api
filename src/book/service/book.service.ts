@@ -46,11 +46,11 @@ export class BookService {
 
     async update(id: number, updateRequest: BookUpdateRequest) {
         const authors = await Promise.all(
-            updateRequest.authorsIds.map(id => this.authorService.findAuthorById(id))
+            updateRequest.authorsIds!.map(id => this.authorService.findAuthorById(id))
         );
 
         const book = await this.bookRepository.preload({
-            id, 
+            id,
             ...updateRequest,
             authors
         });
