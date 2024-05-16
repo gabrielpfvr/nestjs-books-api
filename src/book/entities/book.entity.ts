@@ -1,21 +1,26 @@
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Author } from "./author.entity";
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Author } from './author.entity';
 
 @Entity('book')
 export class Book {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @PrimaryGeneratedColumn()
-    id: number;
+  @Column()
+  title: string;
 
-    @Column()
-    title: string;
+  @Column()
+  pages: number;
 
-    @Column()
-    pages: number;
-
-    @JoinTable()
-    @ManyToMany(() => Author, author => author.books, {
-        cascade: true
-    })
-    authors: Author[];
+  @JoinTable()
+  @ManyToMany(() => Author, (author) => author.books, {
+    cascade: true,
+  })
+  authors: Author[];
 }

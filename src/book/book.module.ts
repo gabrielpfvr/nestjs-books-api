@@ -8,8 +8,8 @@ import { AuthorController } from './controller/author.controller';
 import { AuthorService } from './service/author.service';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Book, Author])],
-    controllers: [BookController, AuthorController],
-    providers: [BookService, AuthorService]
+  imports: [TypeOrmModule.forFeature([Book, Author])],
+  controllers: [BookController, AuthorController],
+  providers: [BookService, AuthorService],
 })
 export class BookModule {}

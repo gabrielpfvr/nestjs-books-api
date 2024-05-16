@@ -13,8 +13,8 @@ import { BookModule } from './book/book.module';
       password: 'postgres',
       database: 'postgres',
       autoLoadEntities: true,
-      synchronize: true
-    })
+      synchronize: true,
+    }),
   ],
   controllers: [],
   providers: [],

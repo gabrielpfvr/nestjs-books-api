@@ -8,66 +8,69 @@ import { AuthorService } from './author.service';
 
 @Injectable()
 export class BookService {
+  constructor(
+    @InjectRepository(Book)
+    private readonly bookRepository: Repository<Book>,
 
-    constructor(
-        @InjectRepository(Book)
-        private readonly bookRepository: Repository<Book>,
+    private readonly authorService: AuthorService,
+  ) {}
 
-        private readonly authorService: AuthorService
-    ) {}
+  static readonly LIVRO_NAO_ENCONTRADO = new NotFoundException(
+    `Livro não encontrado.`,
+  );
 
-    static readonly LIVRO_NAO_ENCONTRADO = new NotFoundException(`Livro não encontrado.`)
+  findAll() {
+    return this.bookRepository.find();
+  }
 
-    findAll() {
-        return this.bookRepository.find();
+  async findOne(id: number) {
+    const book = await this.bookRepository.findOne(id);
+
+    if (!book) {
+      throw BookService.LIVRO_NAO_ENCONTRADO;
+    }
+    return book;
+  }
+
+  async create(request: BookRequest) {
+    const authors = await Promise.all(
+      request.authorsIds.map((id) => this.authorService.findAuthorById(id)),
+    );
+
+    const book = this.bookRepository.create({
+      ...request,
+      authors,
+    });
+
+    this.bookRepository.save(book);
+  }
+
+  async update(id: number, updateRequest: BookUpdateRequest) {
+    const authors = await Promise.all(
+      updateRequest.authorsIds!.map((id) =>
+        this.authorService.findAuthorById(id),
+      ),
+    );
+
+    const book = await this.bookRepository.preload({
+      id,
+      ...updateRequest,
+      authors,
+    });
+
+    if (!book) {
+      throw BookService.LIVRO_NAO_ENCONTRADO;
     }
 
-    async findOne(id: number) {
-        const book = await this.bookRepository.findOne(id);
+    this.bookRepository.save(book);
+  }
 
-        if (!book) {
-            throw BookService.LIVRO_NAO_ENCONTRADO;
-        }
-        return book;
+  async delete(id: number) {
+    const book = await this.bookRepository.findOne(id);
+
+    if (!book) {
+      throw BookService.LIVRO_NAO_ENCONTRADO;
     }
-
-    async create(request: BookRequest) {
-        const authors = await Promise.all(
-            request.authorsIds.map(id => this.authorService.findAuthorById(id))
-        );
-
-        const book = this.bookRepository.create({
-            ...request,
-            authors
-        });
-
-        this.bookRepository.save(book);
-    }
-
-    async update(id: number, updateRequest: BookUpdateRequest) {
-        const authors = await Promise.all(
-            updateRequest.authorsIds!.map(id => this.authorService.findAuthorById(id))
-        );
-
-        const book = await this.bookRepository.preload({
-            id,
-            ...updateRequest,
-            authors
-        });
-
-        if (!book) {
-            throw BookService.LIVRO_NAO_ENCONTRADO;
-        }
-
-        this.bookRepository.save(book);
-    }
-
-    async delete(id: number) {
-        const book = await this.bookRepository.findOne(id);
-
-        if (!book) {
-            throw BookService.LIVRO_NAO_ENCONTRADO;
-        }
-        this.bookRepository.remove(book);
-    }
+    this.bookRepository.remove(book);
+  }
 }
