@@ -3,15 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { BookRequest } from '../dto/book-request.dto';
 import { BookUpdateRequest } from '../dto/book-update-request.dto';
-import { Book } from '../entities/book.entity';
-import { AuthorService } from './author.service';
+import { Book } from '../model/book.entity';
+import { AuthorService } from '../../author/service/author.service';
 
 @Injectable()
 export class BookService {
   constructor(
     @InjectRepository(Book)
     private readonly bookRepository: Repository<Book>,
-
     private readonly authorService: AuthorService,
   ) {}
 

@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AuthorRequest } from '../dto/author-request.dto';
 import { AuthorUpdateRequest } from '../dto/author-update-request.dto';
-import { Author } from '../entities/author.entity';
+import { Author } from '../model/author.entity';
 
 @Injectable()
 export class AuthorService {
